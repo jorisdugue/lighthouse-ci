@@ -196,6 +196,7 @@ declare global {
           username?: string;
           password?: string;
         };
+        useBodyParser?: boolean;
       }
 
       export interface DeleteOldBuildsCron {
