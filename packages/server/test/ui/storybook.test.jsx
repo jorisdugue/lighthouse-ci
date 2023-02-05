@@ -34,7 +34,7 @@ initStoryshots({
       // wait for the webfont request to avoid flakiness with webfont display
       await page.waitForNetworkIdle();
       // wait more for good measure.
-      await page.waitForTimeout(2000);
+      await new Promise(r => setTimeout(r, 2000));
 
       const dimensions = await page.evaluate(() => {
         // Note: #root is made by storybook, #storybook-test-root is made by us in preview.jsx

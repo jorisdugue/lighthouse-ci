@@ -4,17 +4,16 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 'use strict';
+const {DataTypes} = require('sequelize');
 
 /* eslint-disable new-cap */
 
 module.exports = {
   /**
    * @param {import('sequelize').QueryInterface} queryInterface
-   * @param {typeof import('sequelize')} Sequelize
    * @param {LHCI.ServerCommand.StorageOptions} options
    */
-  up: async (queryInterface, Sequelize, options) => {
-    const {DataTypes} = Sequelize;
+  up: async (queryInterface, options) => {
     await queryInterface.createTable('projects', {
       id: {type: DataTypes.UUID(), primaryKey: true},
       name: {type: DataTypes.STRING(40)},
