@@ -10,7 +10,7 @@ const logVerbose = require('debug')('lhci:server:sql:verbose');
 const path = require('path');
 const uuid = require('uuid');
 const Umzug = require('umzug');
-const Sequelize = require('sequelize');
+const {Sequelize, Op} = require('sequelize');
 const {omit, padEnd} = require('@lhci/utils/src/lodash.js');
 const {hashAdminToken, generateAdminToken} = require('../auth.js');
 const {E422} = require('../../express-utils.js');
@@ -82,7 +82,6 @@ function createSequelize(options) {
   const sequelizeOptions = {
     logging: /** @param {*} msg */ msg => logVerbose('[sequelize]', msg),
     ...options.sequelizeOptions,
-    operatorsAliases: false,
   };
 
   if (dialect === 'sqlite') {
@@ -129,7 +128,7 @@ function createSequelize(options) {
 }
 
 /**
- * @param {import('sequelize').Sequelize} sequelize
+ * @param {Sequelize} sequelize
  * @param {LHCI.ServerCommand.StorageOptions} options
  */
 function createUmzug(sequelize, options) {
@@ -163,10 +162,10 @@ function normalizeStatistic(statistic) {
 /**
  * @typedef SqlState
  * @property {import('sequelize').Sequelize} sequelize
- * @property {import('sequelize').Model<LHCI.ServerCommand.Project, ProjectAttrs>} projectModel
- * @property {import('sequelize').Model<LHCI.ServerCommand.Build, BuildAttrs>} buildModel
- * @property {import('sequelize').Model<LHCI.ServerCommand.Run, RunAttrs>} runModel
- * @property {import('sequelize').Model<LHCI.ServerCommand.Statistic, StatisticAttrs>} statisticModel
+ * @property {import('sequelize').ModelDefined<LHCI.ServerCommand.Project, ProjectAttrs>} projectModel
+ * @property {import('sequelize').ModelDefined<LHCI.ServerCommand.Build, BuildAttrs>} buildModel
+ * @property {import('sequelize').ModelDefined<LHCI.ServerCommand.Run, RunAttrs>} runModel
+ * @property {import('sequelize').ModelDefined<LHCI.ServerCommand.Statistic, StatisticAttrs>} statisticModel
  */
 
 /** Sort all records by most recently created */
@@ -190,7 +189,7 @@ class SqlStorageMethod {
   /**
    * @template T1
    * @template T2
-   * @param {import('sequelize').Model<T1, T2>} model
+   * @param {import('sequelize').ModelDefined<T1, T2>} model
    * @param {string} pk
    */
   async _findByPk(model, pk) {
@@ -200,7 +199,7 @@ class SqlStorageMethod {
   /**
    * @template T1
    * @template T2
-   * @param {import('sequelize').Model<T1, T2>} model
+   * @param {import('sequelize').ModelDefined<T1, T2>} model
    * @param {import('sequelize').FindOptions<T1 & T2>} options
    */
   async _findAll(model, options) {
@@ -267,7 +266,7 @@ class SqlStorageMethod {
   }
 
   /**
-   * @return {Promise<Array<LHCI.ServerCommand.Project>>}
+   * @return {Promise<Array<import('sequelize').Model<LHCI.ServerCommand.Project, ProjectAttrs>>>}
    */
   async getProjects() {
     const {projectModel} = this._sql();
@@ -301,7 +300,7 @@ class SqlStorageMethod {
 
   /**
    * @param {string} token
-   * @return {Promise<LHCI.ServerCommand.Project | undefined>}
+   * @return {Promise<import('sequelize').Model<LHCI.ServerCommand.Project, ProjectAttrs> | undefined>}
    */
   async findProjectByToken(token) {
     const {projectModel} = this._sql();
@@ -311,7 +310,7 @@ class SqlStorageMethod {
 
   /**
    * @param {string} projectId
-   * @return {Promise<LHCI.ServerCommand.Project | undefined>}
+   * @return {Promise<import('sequelize').Model<LHCI.ServerCommand.Project, ProjectAttrs> | undefined>}
    */
   async findProjectById(projectId) {
     const {projectModel} = this._sql();
@@ -321,7 +320,7 @@ class SqlStorageMethod {
 
   /**
    * @param {string} slug
-   * @return {Promise<LHCI.ServerCommand.Project | undefined>}
+   * @return {Promise<import('sequelize').Model<LHCI.ServerCommand.Project, ProjectAttrs> | undefined>}
    */
   async findProjectBySlug(slug) {
     const {projectModel} = this._sql();
@@ -381,7 +380,7 @@ class SqlStorageMethod {
   /**
    * @param {string} projectId
    * @param {LHCI.ServerCommand.GetBuildsOptions} [options]
-   * @return {Promise<LHCI.ServerCommand.Build[]>}
+   * @return {Promise<import('sequelize').Model<LHCI.ServerCommand.Build, BuildAttrs>[]>}
    */
   async getBuilds(projectId, options = {}) {
     const {buildModel} = this._sql();
@@ -412,7 +411,7 @@ class SqlStorageMethod {
 
   /**
    * @param {StrictOmit<LHCI.ServerCommand.Build, 'id'>} unsavedBuild
-   * @return {Promise<LHCI.ServerCommand.Build>}
+   * @return {Promise<import('sequelize').Model<LHCI.ServerCommand.Build, BuildAttrs>>}
    */
   async createBuild(unsavedBuild) {
     const {buildModel} = this._sql();
@@ -459,10 +458,7 @@ class SqlStorageMethod {
       const runIds = representativeRuns.map(run => run.id);
 
       log('[sealBuild] updating run representative flag');
-      await runModel.update(
-        {representative: true},
-        {where: {id: {[Sequelize.Op.in]: runIds}}, transaction}
-      );
+      await runModel.update({representative: true}, {where: {id: {[Op.in]: runIds}}, transaction});
 
       log('[sealBuild] committing transaction');
       await transaction.commit();
@@ -475,12 +471,12 @@ class SqlStorageMethod {
 
   /**
    * @param {Date} runAt
-   * @return {Promise<LHCI.ServerCommand.Build[]>}
+   * @return {Promise<import('sequelize').Model<LHCI.ServerCommand.Build, BuildAttrs>[]>}
    */
   async findBuildsBeforeTimestamp(runAt) {
     const {buildModel} = this._sql();
     const oldBuilds = await buildModel.findAll({
-      where: {runAt: {[Sequelize.Op.lte]: runAt}},
+      where: {runAt: {[Op.lte]: runAt}},
       order: [['runAt', 'ASC']],
     });
     return oldBuilds;
@@ -514,7 +510,7 @@ class SqlStorageMethod {
   /**
    * @param {string} projectId
    * @param {string} buildId
-   * @return {Promise<LHCI.ServerCommand.Build | undefined>}
+   * @return {Promise<import('sequelize').Model<LHCI.ServerCommand.Build, BuildAttrs> | undefined>}
    */
   async findBuildById(projectId, buildId) {
     const {buildModel} = this._sql();
@@ -541,7 +537,7 @@ class SqlStorageMethod {
     const lowerUuid = formatAsUuid(prefix, '0');
     const upperUuid = formatAsUuid(prefix, 'f');
     const builds = await buildModel.findAll({
-      where: {id: {[Sequelize.Op.gte]: lowerUuid, [Sequelize.Op.lte]: upperUuid}, projectId},
+      where: {id: {[Op.gte]: lowerUuid, [Op.lte]: upperUuid}, projectId},
       limit: 2,
     });
 
@@ -552,7 +548,7 @@ class SqlStorageMethod {
   /**
    * @param {string} projectId
    * @param {string} buildId
-   * @return {Promise<LHCI.ServerCommand.Build | undefined>}
+   * @return {Promise<import('sequelize').Model<LHCI.ServerCommand.Build, BuildAttrs> | undefined>}
    */
   async findAncestorBuildById(projectId, buildId) {
     const {projectModel, buildModel} = this._sql();
@@ -572,11 +568,11 @@ class SqlStorageMethod {
     const where = {
       projectId: build.projectId,
       branch: project.baseBranch,
-      id: {[Sequelize.Op.ne]: build.id},
+      id: {[Op.ne]: build.id},
     };
 
     const nearestBuildBefore = await buildModel.findAll({
-      where: {...where, runAt: {[Sequelize.Op.lte]: build.runAt}},
+      where: {...where, runAt: {[Op.lte]: build.runAt}},
       order: [['runAt', 'DESC']],
       limit: 1,
     });
@@ -586,7 +582,7 @@ class SqlStorageMethod {
     }
 
     const nearestBuildAfter = await buildModel.findAll({
-      where: {...where, runAt: {[Sequelize.Op.gte]: build.runAt}},
+      where: {...where, runAt: {[Op.gte]: build.runAt}},
       order: [['runAt', 'ASC']],
       limit: 1,
     });
@@ -604,7 +600,7 @@ class SqlStorageMethod {
    * @param {string} projectId
    * @param {string} buildId
    * @param {LHCI.ServerCommand.GetRunsOptions} [options]
-   * @return {Promise<LHCI.ServerCommand.Run[]>}
+   * @return {Promise<import('sequelize').Model<LHCI.ServerCommand.Run, RunAttrs>[]>}
    */
   async getRuns(projectId, buildId, options) {
     const {runModel} = this._sql();
@@ -631,7 +627,7 @@ class SqlStorageMethod {
 
   /**
    * @param {StrictOmit<LHCI.ServerCommand.Run, 'id'>} unsavedRun
-   * @return {Promise<LHCI.ServerCommand.Run>}
+   * @return {Promise<import('sequelize').Model<LHCI.ServerCommand.Run, RunAttrs>>}
    */
   async createRun(unsavedRun) {
     const {runModel} = this._sql();

@@ -374,6 +374,7 @@ class StorageMethod {
   /**
    * @param {string} base
    * @param {{randomLength?: number, maxLength?: number, prandom?: import('@lhci/utils/src/seed-data/prandom')}} [options]
+   * @return {string}
    */
   static generateSlug(base, options = {}) {
     const {maxLength = 40, randomLength = 0, prandom} = options;
