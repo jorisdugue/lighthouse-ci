@@ -15,7 +15,12 @@ module.exports = {
     },
   },
   testEnvironment: 'node',
-  testRunner: require.resolve('jest-circus/runner'),
+  /**
+   * Note of JEST repo :
+   * As of Jest 27, jest-circus is the default test runner,
+   * so you do not have to install it to use it.
+   */
+  // testRunner: require.resolve('jest-circus/runner'),
   globalSetup: require.resolve('./packages/server/test/storybook-setup.js'),
   globalTeardown: require.resolve('./packages/server/test/storybook-teardown.js'),
   moduleNameMapper: {
