@@ -7,7 +7,7 @@
 
 /* eslint-disable new-cap */
 
-const { DataTypes } = require('sequelize');
+const {DataTypes} = require('sequelize');
 
 /** @type {import('sequelize').Model<any, any>} */
 const ModelRef = /** @type {any} */ (undefined);

@@ -87,6 +87,7 @@ function createRouter(context) {
     '/:projectId',
     validateAdminTokenMiddleware(context),
     handleAsyncError(async (req, res) => {
+      console.log(req.params);
       await context.storageMethod.deleteProject(req.params.projectId);
       res.sendStatus(204);
     })

@@ -10,7 +10,7 @@ declare global {
   namespace LHCI {
     namespace ServerCommand {
       export type TableDefinition<T, TAllKeys extends keyof T = keyof T> = {
-        [K in TAllKeys]: import('sequelize').DefineAttributeColumnOptions
+        [K in TAllKeys]: import('sequelize').DefineAttributeColumnOptions;
       };
 
       export type TableAttributes<T, TAllKeys extends keyof T = keyof T> = {[K in TAllKeys]: {}};
@@ -177,14 +177,14 @@ declare global {
         sqlDangerouslyResetDatabase?: boolean;
         sequelizeOptions?: import('sequelize').Options;
         sqlMigrationOptions?: {
-          tableName?: string
-        }
+          tableName?: string;
+        };
       }
 
       export interface Options {
         logLevel: 'silent' | 'verbose';
         port: number;
-        host?: string
+        host?: string;
         storage: StorageOptions;
         psiCollectCron?: {
           psiApiKey: string;
@@ -208,7 +208,6 @@ declare global {
     }
   }
 }
-
 
 // empty export to keep file a module
 export {};

@@ -10,6 +10,7 @@ const ApiClient = require('@lhci/utils/src/api-client.js');
 const {hashAdminToken} = require('./storage/auth.js');
 
 class E404 extends Error {}
+
 class E422 extends Error {}
 
 module.exports = {
@@ -56,7 +57,7 @@ module.exports = {
   },
   /**
    * @param {{storageMethod: LHCI.ServerCommand.StorageMethod}} context
-   * @return {import('express-serve-static-core').RequestHandler}
+   * @return {import("express-serve-static-core").RequestHandler}
    */
   validateAdminTokenMiddleware(context) {
     return (req, res, next) => {
@@ -79,7 +80,7 @@ module.exports = {
   },
   /**
    * @param {{options: LHCI.ServerCommand.Options}} context
-   * @return {import('express-serve-static-core').RequestHandler|undefined}
+   * @return {import("express").RequestHandler|undefined}
    */
   createBasicAuthMiddleware(context) {
     if (!context.options.basicAuth) return undefined;
@@ -90,8 +91,8 @@ module.exports = {
   },
   /**
    * @param {Error} err
-   * @param {import('express-serve-static-core').Request} req
-   * @param {import('express-serve-static-core').Response} res
+   * @param {import("express-serve-static-core").Request} req
+   * @param {import("express-serve-static-core").Response} res
    * @param {*} next
    */
   errorMiddleware(err, req, res, next) {

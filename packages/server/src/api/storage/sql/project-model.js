@@ -7,7 +7,7 @@
 
 /* eslint-disable new-cap */
 
-const { DataTypes } = require("sequelize");
+const {DataTypes} = require('sequelize');
 
 /** @type {LHCI.ServerCommand.TableDefinition<LHCI.ServerCommand.Project>} */
 const attributes = {

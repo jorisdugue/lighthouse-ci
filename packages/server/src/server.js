@@ -38,9 +38,11 @@ async function createApp(options) {
   log('[createApp] creating express app');
   const context = {storageMethod, options};
   const app = express();
+  // @ts-ignore
   if (options.logLevel !== 'silent') app.use(morgan('short'));
 
   // While LHCI should be served behind nginx/apache that handles compression, it won't always be.
+  // @ts-ignore
   app.use(compression());
 
   if (typeof useBodyParser === 'undefined' || useBodyParser) {
@@ -62,6 +64,7 @@ async function createApp(options) {
   app.use('/v1/projects', createProjectsRouter(context));
   app.use('/app', express.static(DIST_FOLDER));
   app.get('/app/*', (_, res) => res.sendFile(path.join(DIST_FOLDER, 'index.html')));
+  // @ts-ignore
   app.use(errorMiddleware);
 
   log('[createApp] launching cron jobs');
