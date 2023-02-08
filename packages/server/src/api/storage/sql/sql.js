@@ -470,6 +470,9 @@ class SqlStorageMethod {
     const build = await this._findByPk(buildModel, buildId);
     if (!build) throw new E422('Invalid build');
     if (build.projectId !== projectId) throw new E422('Invalid project');
+    /**
+     * @type {LHCI.ServerCommand.Build}
+     */
     const cloneBuild = {...clone(build), lifecycle: 'sealed'};
 
     log('[sealBuild] validating buildId');
@@ -484,8 +487,10 @@ class SqlStorageMethod {
       await buildModel.update({lifecycle: 'sealed'}, {where: {id: cloneBuild.id}, transaction});
 
       log('[sealBuild] creating statistics');
-      // @ts-ignore
-      const {representativeRuns} = await StorageMethod.createStatistics(this, build, {transaction});
+      // Don't use build, for that here using clone or this will be crash again
+      const {representativeRuns} = await StorageMethod.createStatistics(this, cloneBuild, {
+        transaction,
+      });
       const runIds = representativeRuns.map(run => run.id);
 
       log('[sealBuild] updating run representative flag');
