@@ -46,9 +46,9 @@ async function createApp(options) {
   app.use(compression());
 
   if (typeof useBodyParser === 'undefined' || useBodyParser) {
-    // Optional if you want to overwrite by other middleware like koa or fastify
-    // 1. Support large payloads because LHRs are big.
-    // 2. Support JSON primitives because `PUT /builds/<id>/lifecycle "sealed"`
+    // 1. Optional if you want to overwrite by other middleware like koa or fastify
+    // 2. Support large payloads because LHRs are big.
+    // 3. Support JSON primitives because `PUT /builds/<id>/lifecycle "sealed"`
     app.use(bodyParser.json({limit: '10mb', strict: false}));
   }
 

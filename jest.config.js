@@ -7,13 +7,17 @@
 
 module.exports = {
   preset: 'ts-jest/presets/js-with-ts-esm',
-  globals: {
-    'ts-jest': {
-      // Disable typechecking.
-      diagnostics: false,
-      isolatedModules: true,
-    },
+  transform: {
+    '^.+\\.m?[tj]sx?$': [
+      'ts-jest',
+      {
+        // Disable typechecking.
+        diagnostics: false,
+        isolatedModules: true,
+      },
+    ],
   },
+  transformIgnorePatterns: ['node_modules/@storybook/.*'],
   testEnvironment: 'node',
   /**
    * Note of JEST repo :

@@ -6,6 +6,7 @@
 'use strict';
 
 /* eslint-env jest, browser */
+/* eslint-disable no-irregular-whitespace */
 
 const {shouldRunE2E, emptyTest} = require('../test-utils.js');
 
@@ -27,12 +28,12 @@ describe('Project dashboard', () => {
       });
 
       expect(commits).toMatchInlineSnapshot(`
-        Array [
+        [
+          "1250build 16call_splitmasterMay 26 6:00 AM",
+          "1249build 15call_splitmasterMay 25 6:00 AM",
           "1248build 14call_splitmasterMay 24 6:00 AM",
           "1247build 13call_splitmasterMay 23 6:00 AM",
           "1246build 12call_splitmasterMay 22 6:00 AM",
-          "1245build 11call_splitmasterMay 21 6:00 AM",
-          "1244build 10call_splitmasterMay 20 6:00 AM",
         ]
       `);
     });
