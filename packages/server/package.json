@@ -16,8 +16,8 @@
     "build:esbuild": "node ../../scripts/build-app.js build ./src/ui/index.html ./dist /app/",
     "build:watch": "node ../../scripts/build-app.js watch ./src/ui/index.html ./dist /app/",
     "build:source-map-explorer": "npm run clean && npm run build && ../../scripts/source-map-explorer.sh",
-    "build:storybook": "build-storybook",
-    "start:storybook": "start-storybook -p 6006"
+    "build:storybook": "storybook build",
+    "start:storybook": "storybook dev -p 6006"
   },
   "dependencies": {
     "@lhci/utils": "0.1.0",
@@ -44,6 +44,9 @@
     "@fontsource/material-icons": "^4.5.4",
     "@fontsource/roboto": "^4.5.8",
     "@fontsource/roboto-mono": "^4.5.10"
+  },
+  "resolutions": {
+    "webpack": "5"
   },
   "alias": {
     "isomorphic-fetch": "clsx"

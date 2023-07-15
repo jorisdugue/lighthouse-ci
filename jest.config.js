@@ -6,6 +6,8 @@
 'use strict';
 
 module.exports = {
+  // Disable prettier because it is not functional at time T following the update of prettier 3.X...
+  prettierPath: null,
   preset: 'ts-jest/presets/js-with-ts-esm',
   transform: {
     '^.+\\.m?[tj]sx?$': [
@@ -18,7 +20,7 @@ module.exports = {
     ],
   },
   transformIgnorePatterns: ['node_modules/@storybook/.*'],
-  testEnvironment: 'node',
+  // testEnvironment: 'node',
   /**
    * Note of JEST repo :
    * As of Jest 27, jest-circus is the default test runner,

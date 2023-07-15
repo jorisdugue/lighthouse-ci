@@ -68,9 +68,10 @@ describe('Lighthouse CI collect CLI using PSI', () => {
       "
     `);
     expect(stderr).toMatchInlineSnapshot(`
-      "Error: PSI Failed (UNKNOWN): Oops
-          at PsiClient.run"
-    `);
+"Error: PSI Failed (UNKNOWN): Oops
+    at PsiClient.run
+    at process.processTicksAndRejections"
+`);
     expect(status).toEqual(1);
   }, 180000);
 });

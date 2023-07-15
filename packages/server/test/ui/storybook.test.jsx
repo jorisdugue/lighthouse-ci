@@ -29,6 +29,9 @@ initStoryshots({
   // storyKindRegex: /Graph/,
   test: imageSnapshot({
     storybookUrl: `http://localhost:${process.env.STORYBOOK_PORT}`,
+    browserLaunchOptions: {
+      args: ['--remote-debugging-pipe', '--headless=new'],
+    },
     beforeScreenshot: async page => {
       // The browser is reused, so set the viewport back to a good default.
       await page.setViewport({width: 800, height: 600});
@@ -36,12 +39,12 @@ initStoryshots({
       // wait for the webfont request to avoid flakiness with webfont display
       await page.waitForNetworkIdle();
       // wait more for good measure.
-      await new Promise(r => setTimeout(r, 2000));
+      await new Promise(r => setTimeout(r, 2500));
 
       const dimensions = await page.evaluate(() => {
-        // Note: #root is made by storybook, #storybook-test-root is made by us in preview.jsx
+        // Note: #storybook-root is made by storybook, #storybook-test-root is made by us in preview.jsx
         // #root > #storybook-test-root > some_element_being_tested
-        const elements = [...document.querySelectorAll('#root, #root *')];
+        const elements = [...document.querySelectorAll('#storybook-root, #storybook-root *')];
         return {
           width: Math.ceil(Math.max(...elements.map(e => e.clientWidth))),
           height: Math.ceil(Math.max(...elements.map(e => e.clientHeight))),

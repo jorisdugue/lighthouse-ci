@@ -5,7 +5,7 @@
  */
 'use strict';
 
-const {h} = require('preact');
+// const {h} = require('preact');
 
 require('./preview.css');
 require('../src/ui/app.css');
@@ -20,9 +20,7 @@ export const parameters = {
   },
 };
 export const decorators = [
-  Story => (
-    <div id="storybook-test-root">
-      <Story />
-    </div>
-  ),
+  Story => <div id='storybook-test-root'>
+    <Story />
+  </div>,
 ];

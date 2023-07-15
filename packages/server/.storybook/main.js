@@ -21,9 +21,10 @@ const config = {
   docs: {
     autodocs: 'tag',
   },
+
   webpack: config => {
     config.resolve.fallback = {
-      url: require.resolve('url'),
+      url: false,
     };
     return config;
   },
