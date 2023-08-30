@@ -2488,6 +2488,13 @@
   resolved "https://registry.yarnpkg.com/@mapbox/whoots-js/-/whoots-js-3.1.0.tgz#497c67a1cef50d1a2459ba60f315e448d2ad87fe"
   integrity sha512-Es6WcD0nO5l+2BOQS4uLfNPYQaNDfbot3X1XUoloz+x0mPDS3eeORZJl06HXjwBG1fOGwCRnzK88LMdxKRrd6Q==
 
+"@mongodb-js/saslprep@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@mongodb-js/saslprep/-/saslprep-1.1.0.tgz#022fa36620a7287d17acd05c4aae1e5f390d250d"
+  integrity sha512-Xfijy7HvfzzqiOAhAepF4SGN5e9leLkMvg/OPOF97XemjfVCYN/oWa75wnkc6mltMSTwY+XlbhWgUOJmkFspSw==
+  dependencies:
+    sparse-bitfield "^3.0.3"
+
 "@ndelangen/get-tarball@^3.0.7":
   version "3.0.9"
   resolved "https://registry.yarnpkg.com/@ndelangen/get-tarball/-/get-tarball-3.0.9.tgz#727ff4454e65f34707e742a59e5e6b1f525d8964"
@@ -12287,7 +12294,7 @@ moment@^2.29.4:
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.4.tgz#3dbe052889fe7c1b2ed966fcb3a77328964ef108"
   integrity sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==
 
-mongodb-connection-string-url@^2.5.4:
+mongodb-connection-string-url@^2.6.0:
   version "2.6.0"
   resolved "https://registry.yarnpkg.com/mongodb-connection-string-url/-/mongodb-connection-string-url-2.6.0.tgz#57901bf352372abdde812c81be47b75c6b2ec5cf"
   integrity sha512-WvTZlI9ab0QYtTYnuMLgobULWhokRjtC7db9LtcVfJ+Hsnyr5eo6ZtNAt3Ly24XZScGMelOcGtm7lSn0332tPQ==
@@ -12296,16 +12303,16 @@ mongodb-connection-string-url@^2.5.4:
     whatwg-url "^11.0.0"
 
 mongodb@^4.1.4:
-  version "4.16.0"
-  resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-4.16.0.tgz#8b0043de7b577c6a7e0ce44a2ca7315b9c0a7927"
-  integrity sha512-0EB113Fsucaq1wsY0dOhi1fmZOwFtLOtteQkiqOXGklvWMnSH3g2QS53f0KTP+/6qOkuoXE2JksubSZNmxeI+g==
+  version "4.17.1"
+  resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-4.17.1.tgz#ccff6ddbda106d5e06c25b0e4df454fd36c5f819"
+  integrity sha512-MBuyYiPUPRTqfH2dV0ya4dcr2E5N52ocBuZ8Sgg/M030nGF78v855B3Z27mZJnp8PxjnUquEnAtjOsphgMZOlQ==
   dependencies:
     bson "^4.7.2"
-    mongodb-connection-string-url "^2.5.4"
+    mongodb-connection-string-url "^2.6.0"
     socks "^2.7.1"
   optionalDependencies:
     "@aws-sdk/credential-providers" "^3.186.0"
-    saslprep "^1.0.3"
+    "@mongodb-js/saslprep" "^1.1.0"
 
 monotone-convex-hull-2d@^1.0.1:
   version "1.0.1"
@@ -14996,13 +15003,6 @@ sane-topojson@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/sane-topojson/-/sane-topojson-4.0.0.tgz#624cdb26fc6d9392c806897bfd1a393f29bb5308"
   integrity sha512-bJILrpBboQfabG3BNnHI2hZl52pbt80BE09u4WhnrmzuF2JbMKZdl62G5glXskJ46p+gxE2IzOwGj/awR4g8AA==
-
-saslprep@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/saslprep/-/saslprep-1.0.3.tgz#4c02f946b56cf54297e347ba1093e7acac4cf226"
-  integrity sha512-/MY/PEMbk2SuY5sScONwhUDsV2p77Znkb/q3nSVstq/yQzYJOH/Azh29p9oJLsl3LnQwSvZDKagDGBsBwSooag==
-  dependencies:
-    sparse-bitfield "^3.0.3"
 
 saxes@^6.0.0:
   version "6.0.0"
